@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revu</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <style>
+        body {
+            margin: 0;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // ============================================================================
+        // CONFIGURATION - Update this URL when ngrok restarts or when deploying
+        // ============================================================================
+        const BACKEND_URL = "https://subintestinal-minnie-pretheological.ngrok-free.dev";
+
+        // ============================================================================
+        // MAIN REDIRECT LOGIC
+        // ============================================================================
+        async function copyAndRedirect() {
+            try {
+                // Parse URL parameters
+                const params = new URLSearchParams(window.location.search);
+                const reviewText = params.get('text');
+                const reviewId = params.get('review_id');
+                const placeId = params.get('place_id');
+
+                console.log('[REDIRECT] Starting...');
+                console.log('[REDIRECT] Review ID:', reviewId);
+                console.log('[REDIRECT] Place ID:', placeId);
+                console.log('[REDIRECT] Text in URL:', reviewText ? 'Yes' : 'No');
+
+                // Validate required parameters
+                if (!placeId) {
+                    console.error('[REDIRECT] Missing place_id parameter');
+                    alert('Error: Missing Google Place ID');
+                    return;
+                }
+
+                let textToCopy = reviewText;
+
+                // If no text in URL, fetch from Firebase API
+                if (!textToCopy && reviewId) {
+                    console.log('[REDIRECT] Fetching review text from Firebase...');
+
+                    try {
+                        const response = await fetch(`${BACKEND_URL}/api/review-text/${reviewId}`);
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+
+                        const data = await response.json();
+                        textToCopy = data.review_text;
+                        console.log('[REDIRECT] ✅ Fetched from Firebase');
+                    } catch (error) {
+                        console.error('[REDIRECT] Failed to fetch review text:', error);
+                        console.warn('[REDIRECT] Proceeding without copied text');
+                    }
+                }
+
+                // Copy to clipboard if we have text
+                if (textToCopy) {
+                    try {
+                        await navigator.clipboard.writeText(decodeURIComponent(textToCopy));
+                        console.log('[REDIRECT] ✅ Copied to clipboard');
+                    } catch (clipboardError) {
+                        console.warn('[REDIRECT] Clipboard copy failed:', clipboardError);
+                        // Continue anyway - user can manually copy
+                    }
+                } else {
+                    console.warn('[REDIRECT] No review text available to copy');
+                }
+
+                // Track the click (non-blocking)
+                if (reviewId) {
+                    fetch(`${BACKEND_URL}/api/track-google-click/${reviewId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    }).then(() => {
+                        console.log('[REDIRECT] ✅ Click tracked');
+                    }).catch(error => {
+                        console.warn('[REDIRECT] Failed to track click:', error);
+                    });
+                }
+
+                // Redirect to Google Reviews immediately
+                const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${placeId}`;
+                console.log('[REDIRECT] Redirecting to Google Reviews...');
+                window.location.href = googleReviewUrl;
+
+            } catch (error) {
+                console.error('[REDIRECT] Fatal error:', error);
+
+                // Fallback: redirect anyway (no alert - silent)
+                const params = new URLSearchParams(window.location.search);
+                const placeId = params.get('place_id');
+                if (placeId) {
+                    window.location.href = `https://search.google.com/local/writereview?placeid=${placeId}`;
+                }
+            }
+        }
+
+        // Run immediately when page loads
+        copyAndRedirect();
+    </script>
+</body>
+</html>
