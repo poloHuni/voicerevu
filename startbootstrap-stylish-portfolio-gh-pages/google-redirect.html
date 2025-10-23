@@ -30,16 +30,18 @@
                 const reviewText = params.get('text');
                 const reviewId = params.get('review_id');
                 const placeId = params.get('place_id');
+                const tripadvisorUrl = params.get('tripadvisor_url');
 
                 console.log('[REDIRECT] Starting...');
                 console.log('[REDIRECT] Review ID:', reviewId);
                 console.log('[REDIRECT] Place ID:', placeId);
+                console.log('[REDIRECT] TripAdvisor URL:', tripadvisorUrl);
                 console.log('[REDIRECT] Text in URL:', reviewText ? 'Yes' : 'No');
 
-                // Validate required parameters
-                if (!placeId) {
-                    console.error('[REDIRECT] Missing place_id parameter');
-                    alert('Error: Missing Google Place ID');
+                // Validate required parameters - need either place_id (Google) or tripadvisor_url (TripAdvisor)
+                if (!placeId && !tripadvisorUrl) {
+                    console.error('[REDIRECT] Missing place_id or tripadvisor_url parameter');
+                    alert('Error: Missing redirect URL');
                     return;
                 }
 
@@ -80,7 +82,8 @@
 
                 // Track the click (non-blocking)
                 if (reviewId) {
-                    fetch(`${BACKEND_URL}/api/track-google-click/${reviewId}`, {
+                    const trackEndpoint = tripadvisorUrl ? 'track-tripadvisor-click' : 'track-google-click';
+                    fetch(`${BACKEND_URL}/api/${trackEndpoint}/${reviewId}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' }
                     }).then(() => {
@@ -90,10 +93,16 @@
                     });
                 }
 
-                // Redirect to Google Reviews immediately
-                const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${placeId}`;
-                console.log('[REDIRECT] Redirecting to Google Reviews...');
-                window.location.href = googleReviewUrl;
+                // Redirect to Google Reviews or TripAdvisor
+                let redirectUrl;
+                if (tripadvisorUrl) {
+                    redirectUrl = decodeURIComponent(tripadvisorUrl);
+                    console.log('[REDIRECT] Redirecting to TripAdvisor...');
+                } else {
+                    redirectUrl = `https://search.google.com/local/writereview?placeid=${placeId}`;
+                    console.log('[REDIRECT] Redirecting to Google Reviews...');
+                }
+                window.location.href = redirectUrl;
 
             } catch (error) {
                 console.error('[REDIRECT] Fatal error:', error);
@@ -101,7 +110,10 @@
                 // Fallback: redirect anyway (no alert - silent)
                 const params = new URLSearchParams(window.location.search);
                 const placeId = params.get('place_id');
-                if (placeId) {
+                const tripadvisorUrl = params.get('tripadvisor_url');
+                if (tripadvisorUrl) {
+                    window.location.href = decodeURIComponent(tripadvisorUrl);
+                } else if (placeId) {
                     window.location.href = `https://search.google.com/local/writereview?placeid=${placeId}`;
                 }
             }
