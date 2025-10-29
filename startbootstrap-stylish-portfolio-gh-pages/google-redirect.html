@@ -21,11 +21,25 @@
         const BACKEND_URL = "https://revu.up.railway.app";
 
         // ============================================================================
+        // BROWSER DETECTION
+        // ============================================================================
+        function isSamsungBrowser() {
+            const ua = navigator.userAgent.toLowerCase();
+            return ua.indexOf('samsungbrowser') > -1;
+        }
+
+        // ============================================================================
         // CROSS-BROWSER CLIPBOARD FUNCTION (Samsung Browser Compatible)
         // ============================================================================
         async function copyToClipboardCrossBrowser(text) {
-            // Method 1: Try modern Clipboard API (Chrome, Firefox, Safari, modern browsers)
-            if (navigator.clipboard && navigator.clipboard.writeText) {
+            const isSamsung = isSamsungBrowser();
+
+            if (isSamsung) {
+                console.log('[CLIPBOARD] Samsung Browser detected - using enhanced legacy method');
+            }
+
+            // Method 1: Try modern Clipboard API first (unless Samsung)
+            if (!isSamsung && navigator.clipboard && navigator.clipboard.writeText) {
                 try {
                     await navigator.clipboard.writeText(text);
                     console.log('[CLIPBOARD] ✅ Copied using modern API');
@@ -36,37 +50,53 @@
                 }
             }
 
-            // Method 2: Legacy fallback using document.execCommand (Samsung Browser, older browsers)
+            // Method 2: Enhanced legacy method (Samsung Browser optimized)
             try {
                 // Create temporary textarea element
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
+
+                // Samsung Browser: Make it slightly visible and accessible
                 textarea.style.position = 'fixed';
                 textarea.style.top = '0';
                 textarea.style.left = '0';
-                textarea.style.width = '2em';
-                textarea.style.height = '2em';
-                textarea.style.padding = '0';
-                textarea.style.border = 'none';
-                textarea.style.outline = 'none';
-                textarea.style.boxShadow = 'none';
-                textarea.style.background = 'transparent';
-                textarea.style.opacity = '0';
+                textarea.style.width = '100%';
+                textarea.style.height = '100px';
+                textarea.style.padding = '10px';
+                textarea.style.fontSize = '16px';
+                textarea.style.border = '1px solid #ccc';
+                textarea.style.zIndex = '9999';
+                textarea.style.backgroundColor = 'white';
+
+                // Prevent scrolling
+                textarea.style.overflow = 'hidden';
+                textarea.setAttribute('readonly', '');
 
                 document.body.appendChild(textarea);
+
+                // Give Samsung Browser time to render
+                await new Promise(resolve => setTimeout(resolve, 50));
 
                 // Select and copy text
                 textarea.focus();
                 textarea.select();
 
-                // For iOS Safari
+                // For iOS Safari and Samsung
                 textarea.setSelectionRange(0, text.length);
 
                 const successful = document.execCommand('copy');
+
+                console.log('[CLIPBOARD] execCommand result:', successful);
+
+                // Keep visible briefly for Samsung (300ms)
+                if (isSamsung) {
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                }
+
                 document.body.removeChild(textarea);
 
                 if (successful) {
-                    console.log('[CLIPBOARD] ✅ Copied using legacy method (Samsung Browser compatible)');
+                    console.log('[CLIPBOARD] ✅ Copied using legacy method');
                     return true;
                 } else {
                     console.error('[CLIPBOARD] ❌ Legacy method failed');
@@ -126,9 +156,10 @@
                 }
 
                 // Copy to clipboard if we have text (with Samsung Browser fallback)
+                let copySuccess = false;
                 if (textToCopy) {
                     const decodedText = decodeURIComponent(textToCopy);
-                    const copySuccess = await copyToClipboardCrossBrowser(decodedText);
+                    copySuccess = await copyToClipboardCrossBrowser(decodedText);
 
                     if (copySuccess) {
                         console.log('[REDIRECT] ✅ Review text copied to clipboard');
@@ -150,6 +181,12 @@
                     }).catch(error => {
                         console.warn('[REDIRECT] Failed to track click:', error);
                     });
+                }
+
+                // Samsung Browser: Add extra delay if copy was successful to ensure it completes
+                if (isSamsungBrowser() && copySuccess) {
+                    console.log('[REDIRECT] Samsung Browser - adding 500ms delay before redirect');
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
 
                 // Redirect to Google Reviews or TripAdvisor
