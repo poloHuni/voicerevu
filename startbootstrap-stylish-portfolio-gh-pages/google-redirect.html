@@ -21,6 +21,64 @@
         const BACKEND_URL = "https://revu.up.railway.app";
 
         // ============================================================================
+        // CROSS-BROWSER CLIPBOARD FUNCTION (Samsung Browser Compatible)
+        // ============================================================================
+        async function copyToClipboardCrossBrowser(text) {
+            // Method 1: Try modern Clipboard API (Chrome, Firefox, Safari, modern browsers)
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    console.log('[CLIPBOARD] ✅ Copied using modern API');
+                    return true;
+                } catch (err) {
+                    console.warn('[CLIPBOARD] Modern API failed:', err);
+                    // Fall through to legacy method
+                }
+            }
+
+            // Method 2: Legacy fallback using document.execCommand (Samsung Browser, older browsers)
+            try {
+                // Create temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.top = '0';
+                textarea.style.left = '0';
+                textarea.style.width = '2em';
+                textarea.style.height = '2em';
+                textarea.style.padding = '0';
+                textarea.style.border = 'none';
+                textarea.style.outline = 'none';
+                textarea.style.boxShadow = 'none';
+                textarea.style.background = 'transparent';
+                textarea.style.opacity = '0';
+
+                document.body.appendChild(textarea);
+
+                // Select and copy text
+                textarea.focus();
+                textarea.select();
+
+                // For iOS Safari
+                textarea.setSelectionRange(0, text.length);
+
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                if (successful) {
+                    console.log('[CLIPBOARD] ✅ Copied using legacy method (Samsung Browser compatible)');
+                    return true;
+                } else {
+                    console.error('[CLIPBOARD] ❌ Legacy method failed');
+                    return false;
+                }
+            } catch (err) {
+                console.error('[CLIPBOARD] ❌ All methods failed:', err);
+                return false;
+            }
+        }
+
+        // ============================================================================
         // MAIN REDIRECT LOGIC
         // ============================================================================
         async function copyAndRedirect() {
@@ -67,14 +125,15 @@
                     }
                 }
 
-                // Copy to clipboard if we have text
+                // Copy to clipboard if we have text (with Samsung Browser fallback)
                 if (textToCopy) {
-                    try {
-                        await navigator.clipboard.writeText(decodeURIComponent(textToCopy));
-                        console.log('[REDIRECT] ✅ Copied to clipboard');
-                    } catch (clipboardError) {
-                        console.warn('[REDIRECT] Clipboard copy failed:', clipboardError);
-                        // Continue anyway - user can manually copy
+                    const decodedText = decodeURIComponent(textToCopy);
+                    const copySuccess = await copyToClipboardCrossBrowser(decodedText);
+
+                    if (copySuccess) {
+                        console.log('[REDIRECT] ✅ Review text copied to clipboard');
+                    } else {
+                        console.warn('[REDIRECT] ⚠️ Clipboard copy failed - user can manually copy');
                     }
                 } else {
                     console.warn('[REDIRECT] No review text available to copy');
