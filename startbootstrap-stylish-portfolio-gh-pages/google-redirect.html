@@ -9,159 +9,16 @@
         body {
             margin: 0;
             background: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        #samsung-prompt {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #samsung-prompt.show {
-            display: flex;
-        }
-
-        #copy-button {
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        #copy-button:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.4);
-        }
-
-        #prompt-text {
-            font-size: 16px;
-            color: #333;
-            text-align: center;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .spinner {
-            display: none;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .spinner.show {
-            display: block;
         }
     </style>
 </head>
 <body>
-    <!-- Samsung Browser Prompt (only shown on Samsung) -->
-    <div id="samsung-prompt">
-        <div id="prompt-text">
-            Your review is ready!<br>
-            Tap the button below to copy and continue.
-        </div>
-        <button id="copy-button">Copy & Continue to Review</button>
-        <div class="spinner" id="spinner">Redirecting...</div>
-    </div>
 
     <script>
         // ============================================================================
-        // CONFIGURATION - Update this URL when ngrok restarts or when deploying
+        // CONFIGURATION - Railway Production Backend
         // ============================================================================
-        const BACKEND_URL = "https://revu.up.railway.app";
-
-        // ============================================================================
-        // BROWSER DETECTION
-        // ============================================================================
-        function isSamsungBrowser() {
-            const ua = navigator.userAgent.toLowerCase();
-            return ua.indexOf('samsungbrowser') > -1;
-        }
-
-        // ============================================================================
-        // CROSS-BROWSER CLIPBOARD FUNCTION (Samsung Browser Compatible)
-        // ============================================================================
-        async function copyToClipboardCrossBrowser(text) {
-            const isSamsung = isSamsungBrowser();
-
-            if (isSamsung) {
-                console.log('[CLIPBOARD] Samsung Browser detected - using enhanced legacy method');
-            }
-
-            // Method 1: Try modern Clipboard API first (unless Samsung)
-            if (!isSamsung && navigator.clipboard && navigator.clipboard.writeText) {
-                try {
-                    await navigator.clipboard.writeText(text);
-                    console.log('[CLIPBOARD] ✅ Copied using modern API');
-                    return true;
-                } catch (err) {
-                    console.warn('[CLIPBOARD] Modern API failed:', err);
-                    // Fall through to legacy method
-                }
-            }
-
-            // Method 2: Legacy method with textarea (Samsung Browser + iOS)
-            try {
-                // Create temporary textarea element
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                textarea.style.position = 'fixed';
-                textarea.style.top = '50%';
-                textarea.style.left = '50%';
-                textarea.style.transform = 'translate(-50%, -50%)';
-                textarea.style.width = '80%';
-                textarea.style.padding = '20px';
-                textarea.style.fontSize = '16px';
-                textarea.style.border = 'none';
-                textarea.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-                textarea.style.borderRadius = '10px';
-                textarea.style.backgroundColor = 'white';
-                textarea.setAttribute('readonly', '');
-
-                document.body.appendChild(textarea);
-
-                // Select text
-                textarea.focus();
-                textarea.select();
-                textarea.setSelectionRange(0, text.length);
-
-                // Execute copy command
-                const successful = document.execCommand('copy');
-
-                console.log('[CLIPBOARD] execCommand result:', successful);
-
-                // Remove textarea
-                document.body.removeChild(textarea);
-
-                if (successful) {
-                    console.log('[CLIPBOARD] ✅ Copied using legacy method');
-                    return true;
-                } else {
-                    console.error('[CLIPBOARD] ❌ Legacy method failed');
-                    return false;
-                }
-            } catch (err) {
-                console.error('[CLIPBOARD] ❌ All methods failed:', err);
-                return false;
-            }
-        }
+        const BACKEND_URL = "https://revu-whatsapp-production.up.railway.app";
 
         // ============================================================================
         // MAIN REDIRECT LOGIC
@@ -175,16 +32,25 @@
                 const placeId = params.get('place_id');
                 const tripadvisorUrl = params.get('tripadvisor_url');
 
-                console.log('[REDIRECT] Starting...');
+                // Determine platform (Google or TripAdvisor)
+                const isTripadvisor = !!tripadvisorUrl;
+                const platform = isTripadvisor ? 'TripAdvisor' : 'Google';
+
+                console.log(`[REDIRECT] Starting ${platform} redirect...`);
                 console.log('[REDIRECT] Review ID:', reviewId);
-                console.log('[REDIRECT] Place ID:', placeId);
-                console.log('[REDIRECT] TripAdvisor URL:', tripadvisorUrl);
+                console.log('[REDIRECT] Platform:', platform);
                 console.log('[REDIRECT] Text in URL:', reviewText ? 'Yes' : 'No');
 
-                // Validate required parameters - need either place_id (Google) or tripadvisor_url (TripAdvisor)
-                if (!placeId && !tripadvisorUrl) {
-                    console.error('[REDIRECT] Missing place_id or tripadvisor_url parameter');
-                    alert('Error: Missing redirect URL');
+                // Validate required parameters
+                if (!isTripadvisor && !placeId) {
+                    console.error('[REDIRECT] Missing place_id parameter for Google');
+                    alert('Error: Missing Google Place ID');
+                    return;
+                }
+
+                if (isTripadvisor && !tripadvisorUrl) {
+                    console.error('[REDIRECT] Missing tripadvisor_url parameter');
+                    alert('Error: Missing TripAdvisor URL');
                     return;
                 }
 
@@ -210,75 +76,14 @@
                     }
                 }
 
-                // Prepare redirect URL
-                let redirectUrl;
-                if (tripadvisorUrl) {
-                    redirectUrl = decodeURIComponent(tripadvisorUrl);
-                } else {
-                    redirectUrl = `https://search.google.com/local/writereview?placeid=${placeId}`;
-                }
-
-                // Samsung Browser: Show button and wait for user tap (required for clipboard access)
-                if (isSamsungBrowser() && textToCopy) {
-                    console.log('[REDIRECT] Samsung Browser detected - showing tap button');
-
-                    // Show the Samsung prompt
-                    const promptDiv = document.getElementById('samsung-prompt');
-                    promptDiv.classList.add('show');
-
-                    // Store data for button handler
-                    window.reviewData = {
-                        textToCopy: decodeURIComponent(textToCopy),
-                        redirectUrl: redirectUrl,
-                        reviewId: reviewId,
-                        trackEndpoint: tripadvisorUrl ? 'track-tripadvisor-click' : 'track-google-click'
-                    };
-
-                    // Button click handler
-                    document.getElementById('copy-button').onclick = async function() {
-                        console.log('[SAMSUNG] User tapped button - copying now');
-
-                        // Disable button
-                        this.disabled = true;
-                        this.textContent = 'Copying...';
-
-                        // Copy with user gesture
-                        const success = await copyToClipboardCrossBrowser(window.reviewData.textToCopy);
-
-                        if (success) {
-                            console.log('[SAMSUNG] ✅ Copy successful');
-                        }
-
-                        // Track click
-                        if (window.reviewData.reviewId) {
-                            fetch(`${BACKEND_URL}/api/${window.reviewData.trackEndpoint}/${window.reviewData.reviewId}`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' }
-                            }).catch(err => console.warn('Track failed:', err));
-                        }
-
-                        // Show spinner and redirect
-                        document.getElementById('spinner').classList.add('show');
-                        this.style.display = 'none';
-
-                        setTimeout(() => {
-                            window.location.href = window.reviewData.redirectUrl;
-                        }, 300);
-                    };
-
-                    return; // Don't auto-redirect
-                }
-
-                // Non-Samsung browsers: Auto-copy and redirect
-                let copySuccess = false;
+                // Copy to clipboard if we have text
                 if (textToCopy) {
-                    const decodedText = decodeURIComponent(textToCopy);
-                    copySuccess = await copyToClipboardCrossBrowser(decodedText);
-
-                    if (copySuccess) {
-                        console.log('[REDIRECT] ✅ Review text copied to clipboard');
-                    } else {
-                        console.warn('[REDIRECT] ⚠️ Clipboard copy failed - user can manually copy');
+                    try {
+                        await navigator.clipboard.writeText(decodeURIComponent(textToCopy));
+                        console.log('[REDIRECT] ✅ Copied to clipboard');
+                    } catch (clipboardError) {
+                        console.warn('[REDIRECT] Clipboard copy failed:', clipboardError);
+                        // Continue anyway - user can manually copy
                     }
                 } else {
                     console.warn('[REDIRECT] No review text available to copy');
@@ -286,19 +91,30 @@
 
                 // Track the click (non-blocking)
                 if (reviewId) {
-                    const trackEndpoint = tripadvisorUrl ? 'track-tripadvisor-click' : 'track-google-click';
-                    fetch(`${BACKEND_URL}/api/${trackEndpoint}/${reviewId}`, {
+                    const trackEndpoint = isTripadvisor
+                        ? `${BACKEND_URL}/api/track-tripadvisor-click/${reviewId}`
+                        : `${BACKEND_URL}/api/track-google-click/${reviewId}`;
+
+                    fetch(trackEndpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' }
                     }).then(() => {
-                        console.log('[REDIRECT] ✅ Click tracked');
+                        console.log(`[REDIRECT] ✅ ${platform} click tracked`);
                     }).catch(error => {
                         console.warn('[REDIRECT] Failed to track click:', error);
                     });
                 }
 
-                // Auto-redirect for non-Samsung browsers
-                console.log('[REDIRECT] Redirecting to', tripadvisorUrl ? 'TripAdvisor' : 'Google Reviews');
+                // Redirect to the appropriate platform immediately
+                let redirectUrl;
+                if (isTripadvisor) {
+                    redirectUrl = decodeURIComponent(tripadvisorUrl);
+                    console.log('[REDIRECT] Redirecting to TripAdvisor...');
+                } else {
+                    redirectUrl = `https://search.google.com/local/writereview?placeid=${placeId}`;
+                    console.log('[REDIRECT] Redirecting to Google Reviews...');
+                }
+
                 window.location.href = redirectUrl;
 
             } catch (error) {
@@ -308,6 +124,7 @@
                 const params = new URLSearchParams(window.location.search);
                 const placeId = params.get('place_id');
                 const tripadvisorUrl = params.get('tripadvisor_url');
+
                 if (tripadvisorUrl) {
                     window.location.href = decodeURIComponent(tripadvisorUrl);
                 } else if (placeId) {
