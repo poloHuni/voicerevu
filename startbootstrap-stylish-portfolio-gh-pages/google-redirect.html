@@ -25,17 +25,25 @@
         // ============================================================================
         async function copyAndRedirect() {
             try {
-                // Parse URL parameters - now we only need review_id
+                // Parse URL parameters
                 const params = new URLSearchParams(window.location.search);
                 const reviewId = params.get('review_id');
+                const platform = params.get('platform'); // 'google' or 'tripadvisor'
 
                 console.log('[REDIRECT] Starting redirect...');
                 console.log('[REDIRECT] Review ID:', reviewId);
+                console.log('[REDIRECT] Platform:', platform);
 
-                // Validate review_id parameter
+                // Validate required parameters
                 if (!reviewId) {
                     console.error('[REDIRECT] Missing review_id parameter');
                     alert('Error: Missing review ID');
+                    return;
+                }
+
+                if (!platform || (platform !== 'google' && platform !== 'tripadvisor')) {
+                    console.error('[REDIRECT] Missing or invalid platform parameter');
+                    alert('Error: Invalid platform');
                     return;
                 }
 
@@ -75,13 +83,17 @@
                     console.warn('[REDIRECT] No review text available to copy');
                 }
 
-                // Determine platform and build redirect URL
+                // Build redirect URL based on platform parameter
                 let redirectUrl;
-                let platform;
 
-                if (data.tripadvisor_available && data.business_tripadvisor_url) {
-                    // TripAdvisor takes priority if available
-                    platform = 'TripAdvisor';
+                if (platform === 'tripadvisor') {
+                    // TripAdvisor redirect
+                    if (!data.tripadvisor_available || !data.business_tripadvisor_url) {
+                        console.error('[REDIRECT] TripAdvisor not available for this business');
+                        alert('Error: TripAdvisor is not configured for this business.');
+                        return;
+                    }
+
                     redirectUrl = data.business_tripadvisor_url;
                     console.log('[REDIRECT] Platform: TripAdvisor');
                     console.log('[REDIRECT] URL:', redirectUrl);
@@ -96,9 +108,14 @@
                         console.warn('[REDIRECT] Failed to track click:', error);
                     });
 
-                } else if (data.google_available && data.business_google_id) {
-                    // Google fallback
-                    platform = 'Google';
+                } else if (platform === 'google') {
+                    // Google redirect
+                    if (!data.google_available || !data.business_google_id) {
+                        console.error('[REDIRECT] Google not available for this business');
+                        alert('Error: Google Reviews is not configured for this business.');
+                        return;
+                    }
+
                     redirectUrl = `https://search.google.com/local/writereview?placeid=${data.business_google_id}`;
                     console.log('[REDIRECT] Platform: Google');
                     console.log('[REDIRECT] Place ID:', data.business_google_id);
@@ -112,11 +129,6 @@
                     }).catch(error => {
                         console.warn('[REDIRECT] Failed to track click:', error);
                     });
-
-                } else {
-                    console.error('[REDIRECT] No platform available for this review');
-                    alert('Error: No review platform (Google or TripAdvisor) is configured for this business.');
-                    return;
                 }
 
                 // Small delay to ensure clipboard and tracking complete
@@ -125,7 +137,8 @@
                 }
 
                 // Redirect to the platform
-                console.log(`[REDIRECT] Redirecting to ${platform}...`);
+                const platformName = platform === 'google' ? 'Google' : 'TripAdvisor';
+                console.log(`[REDIRECT] Redirecting to ${platformName}...`);
                 window.location.href = redirectUrl;
 
             } catch (error) {
