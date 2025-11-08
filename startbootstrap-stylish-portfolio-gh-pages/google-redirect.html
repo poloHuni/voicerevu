@@ -25,62 +25,46 @@
         // ============================================================================
         async function copyAndRedirect() {
             try {
-                // Parse URL parameters
+                // Parse URL parameters - now we only need review_id
                 const params = new URLSearchParams(window.location.search);
-                const reviewText = params.get('text');
                 const reviewId = params.get('review_id');
-                const placeId = params.get('place_id');
-                const tripadvisorUrl = params.get('tripadvisor_url');
 
-                // Determine platform (Google or TripAdvisor)
-                const isTripadvisor = !!tripadvisorUrl;
-                const platform = isTripadvisor ? 'TripAdvisor' : 'Google';
-
-                console.log(`[REDIRECT] Starting ${platform} redirect...`);
+                console.log('[REDIRECT] Starting redirect...');
                 console.log('[REDIRECT] Review ID:', reviewId);
-                console.log('[REDIRECT] Platform:', platform);
-                console.log('[REDIRECT] Text in URL:', reviewText ? 'Yes' : 'No');
 
-                // Validate required parameters
-                if (!isTripadvisor && !placeId) {
-                    console.error('[REDIRECT] Missing place_id parameter for Google');
-                    alert('Error: Missing Google Place ID');
+                // Validate review_id parameter
+                if (!reviewId) {
+                    console.error('[REDIRECT] Missing review_id parameter');
+                    alert('Error: Missing review ID');
                     return;
                 }
 
-                if (isTripadvisor && !tripadvisorUrl) {
-                    console.error('[REDIRECT] Missing tripadvisor_url parameter');
-                    alert('Error: Missing TripAdvisor URL');
-                    return;
-                }
+                // Fetch ALL data from API (review text + business IDs)
+                console.log('[REDIRECT] Fetching review data from API...');
 
-                let textToCopy = reviewText;
+                let data;
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/review-text/${reviewId}`);
 
-                // If no text in URL, fetch from Firebase API
-                if (!textToCopy && reviewId) {
-                    console.log('[REDIRECT] Fetching review text from Firebase...');
-
-                    try {
-                        const response = await fetch(`${BACKEND_URL}/api/review-text/${reviewId}`);
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                        }
-
-                        const data = await response.json();
-                        textToCopy = data.review_text;
-                        console.log('[REDIRECT] ✅ Fetched from Firebase');
-                    } catch (error) {
-                        console.error('[REDIRECT] Failed to fetch review text:', error);
-                        console.warn('[REDIRECT] Proceeding without copied text');
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                     }
+
+                    data = await response.json();
+                    console.log('[REDIRECT] ✅ Fetched data from API');
+                    console.log('[REDIRECT] Google available:', data.google_available);
+                    console.log('[REDIRECT] TripAdvisor available:', data.tripadvisor_available);
+                } catch (error) {
+                    console.error('[REDIRECT] Failed to fetch review data:', error);
+                    alert('Error: Could not load review data. Please try again.');
+                    return;
                 }
 
-                // Copy to clipboard if we have text
+                // Copy review text to clipboard
                 let copySuccess = false;
-                if (textToCopy) {
+                if (data.review_text) {
                     try {
-                        await navigator.clipboard.writeText(decodeURIComponent(textToCopy));
+                        await navigator.clipboard.writeText(data.review_text);
                         console.log('[REDIRECT] ✅ Copied to clipboard');
                         copySuccess = true;
                     } catch (clipboardError) {
@@ -91,52 +75,62 @@
                     console.warn('[REDIRECT] No review text available to copy');
                 }
 
-                // Track the click (non-blocking)
-                if (reviewId) {
-                    const trackEndpoint = isTripadvisor
-                        ? `${BACKEND_URL}/api/track-tripadvisor-click/${reviewId}`
-                        : `${BACKEND_URL}/api/track-google-click/${reviewId}`;
+                // Determine platform and build redirect URL
+                let redirectUrl;
+                let platform;
 
-                    fetch(trackEndpoint, {
+                if (data.tripadvisor_available && data.business_tripadvisor_url) {
+                    // TripAdvisor takes priority if available
+                    platform = 'TripAdvisor';
+                    redirectUrl = data.business_tripadvisor_url;
+                    console.log('[REDIRECT] Platform: TripAdvisor');
+                    console.log('[REDIRECT] URL:', redirectUrl);
+
+                    // Track TripAdvisor click
+                    fetch(`${BACKEND_URL}/api/track-tripadvisor-click/${reviewId}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' }
                     }).then(() => {
-                        console.log(`[REDIRECT] ✅ ${platform} click tracked`);
+                        console.log('[REDIRECT] ✅ TripAdvisor click tracked');
                     }).catch(error => {
                         console.warn('[REDIRECT] Failed to track click:', error);
                     });
+
+                } else if (data.google_available && data.business_google_id) {
+                    // Google fallback
+                    platform = 'Google';
+                    redirectUrl = `https://search.google.com/local/writereview?placeid=${data.business_google_id}`;
+                    console.log('[REDIRECT] Platform: Google');
+                    console.log('[REDIRECT] Place ID:', data.business_google_id);
+
+                    // Track Google click
+                    fetch(`${BACKEND_URL}/api/track-google-click/${reviewId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    }).then(() => {
+                        console.log('[REDIRECT] ✅ Google click tracked');
+                    }).catch(error => {
+                        console.warn('[REDIRECT] Failed to track click:', error);
+                    });
+
+                } else {
+                    console.error('[REDIRECT] No platform available for this review');
+                    alert('Error: No review platform (Google or TripAdvisor) is configured for this business.');
+                    return;
                 }
 
-                // Small delay to ensure clipboard operation completes
+                // Small delay to ensure clipboard and tracking complete
                 if (copySuccess) {
                     await new Promise(resolve => setTimeout(resolve, 500));
                 }
 
-                // Redirect to the appropriate platform
-                let redirectUrl;
-                if (isTripadvisor) {
-                    redirectUrl = decodeURIComponent(tripadvisorUrl);
-                    console.log('[REDIRECT] Redirecting to TripAdvisor...');
-                } else {
-                    redirectUrl = `https://search.google.com/local/writereview?placeid=${placeId}`;
-                    console.log('[REDIRECT] Redirecting to Google Reviews...');
-                }
-
+                // Redirect to the platform
+                console.log(`[REDIRECT] Redirecting to ${platform}...`);
                 window.location.href = redirectUrl;
 
             } catch (error) {
                 console.error('[REDIRECT] Fatal error:', error);
-
-                // Fallback: redirect anyway (no alert - silent)
-                const params = new URLSearchParams(window.location.search);
-                const placeId = params.get('place_id');
-                const tripadvisorUrl = params.get('tripadvisor_url');
-
-                if (tripadvisorUrl) {
-                    window.location.href = decodeURIComponent(tripadvisorUrl);
-                } else if (placeId) {
-                    window.location.href = `https://search.google.com/local/writereview?placeid=${placeId}`;
-                }
+                alert('An unexpected error occurred. Please try again or contact support.');
             }
         }
 
