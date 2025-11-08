@@ -9,98 +9,16 @@
         body {
             margin: 0;
             background: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        #whatsapp-notice {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            z-index: 9999;
-        }
-        #whatsapp-notice .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding-top: 20%;
-        }
-        #whatsapp-notice h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        #whatsapp-notice p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        #whatsapp-notice .btn {
-            display: inline-block;
-            background: white;
-            color: #25D366;
-            padding: 15px 40px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        #whatsapp-notice .instructions {
-            margin-top: 30px;
-            font-size: 14px;
-            opacity: 0.9;
         }
     </style>
 </head>
 <body>
-
-    <!-- WhatsApp In-App Browser Notice -->
-    <div id="whatsapp-notice">
-        <div class="container">
-            <h1>📱 Open in Browser</h1>
-            <p>To copy your review, please open this page in your default browser.</p>
-            <a href="#" id="open-browser-btn" class="btn">Open in Browser</a>
-            <div class="instructions">
-                <p>Or tap the three dots (⋮) at the top right and select "Open in Browser"</p>
-            </div>
-        </div>
-    </div>
 
     <script>
         // ============================================================================
         // CONFIGURATION - Railway Production Backend
         // ============================================================================
         const BACKEND_URL = "https://revu-whatsapp-production.up.railway.app";
-
-        // ============================================================================
-        // WHATSAPP BROWSER DETECTION
-        // ============================================================================
-        function isWhatsAppBrowser() {
-            const ua = navigator.userAgent || navigator.vendor || window.opera;
-            // Detect WhatsApp in-app browser
-            return /WhatsApp/i.test(ua) || /FBAN|FBAV/i.test(ua);
-        }
-
-        function forceExternalBrowser() {
-            const currentUrl = window.location.href;
-            const ua = navigator.userAgent || navigator.vendor || window.opera;
-
-            // Android: Use intent URL to force external browser
-            if (/android/i.test(ua)) {
-                const intentUrl = `intent://${window.location.host}${window.location.pathname}${window.location.search}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
-                console.log('[WHATSAPP] Attempting Android intent redirect:', intentUrl);
-                window.location.href = intentUrl;
-                return true;
-            }
-
-            // iOS: Show instructions (can't force external browser)
-            console.log('[WHATSAPP] iOS detected - showing manual instructions');
-            return false;
-        }
 
         // ============================================================================
         // MAIN REDIRECT LOGIC
@@ -215,44 +133,8 @@
             }
         }
 
-        // ============================================================================
-        // INITIALIZATION - Check for WhatsApp browser first
-        // ============================================================================
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('[INIT] Page loaded, checking browser...');
-            console.log('[INIT] User Agent:', navigator.userAgent);
-
-            if (isWhatsAppBrowser()) {
-                console.log('[WHATSAPP] ⚠️ WhatsApp in-app browser detected!');
-
-                // Show the notice
-                document.getElementById('whatsapp-notice').style.display = 'block';
-
-                // Set up button to force external browser
-                document.getElementById('open-browser-btn').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const forced = forceExternalBrowser();
-
-                    if (!forced) {
-                        // If we couldn't force (iOS), just show the instructions
-                        alert('Please tap the three dots (⋮) menu and select "Open in Browser"');
-                    }
-                });
-
-                // Automatically attempt to open in external browser (Android only)
-                const ua = navigator.userAgent || navigator.vendor || window.opera;
-                if (/android/i.test(ua)) {
-                    setTimeout(() => {
-                        console.log('[WHATSAPP] Auto-attempting external browser open (Android)');
-                        forceExternalBrowser();
-                    }, 1000);
-                }
-            } else {
-                console.log('[INIT] ✅ Normal browser detected, proceeding with redirect');
-                // Normal browser - proceed with copy and redirect
-                copyAndRedirect();
-            }
-        });
+        // Run immediately when page loads
+        copyAndRedirect();
     </script>
 </body>
 </html>
