@@ -112,6 +112,10 @@
                     await new Promise(resolve => setTimeout(resolve, 500));
                 }
 
+                // DEBUG: Longer delay to read console logs (remove this in production)
+                console.log('[REDIRECT] ⏱️ Waiting 5 seconds before redirect for debugging...');
+                await new Promise(resolve => setTimeout(resolve, 5000));
+
                 // Redirect to the appropriate platform
                 let redirectUrl;
                 if (isTripadvisor) {
