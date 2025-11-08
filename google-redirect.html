@@ -18,7 +18,7 @@
         // ============================================================================
         // CONFIGURATION - Railway Production Backend
         // ============================================================================
-        const BACKEND_URL = "https://revu-whatsapp-production.up.railway.app";
+        const BACKEND_URL = "https://revu.up.railway.app";
 
         // ============================================================================
         // MAIN REDIRECT LOGIC
@@ -77,10 +77,12 @@
                 }
 
                 // Copy to clipboard if we have text
+                let copySuccess = false;
                 if (textToCopy) {
                     try {
                         await navigator.clipboard.writeText(decodeURIComponent(textToCopy));
                         console.log('[REDIRECT] ✅ Copied to clipboard');
+                        copySuccess = true;
                     } catch (clipboardError) {
                         console.warn('[REDIRECT] Clipboard copy failed:', clipboardError);
                         // Continue anyway - user can manually copy
@@ -105,7 +107,12 @@
                     });
                 }
 
-                // Redirect to the appropriate platform immediately
+                // Small delay to ensure clipboard operation completes
+                if (copySuccess) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+
+                // Redirect to the appropriate platform
                 let redirectUrl;
                 if (isTripadvisor) {
                     redirectUrl = decodeURIComponent(tripadvisorUrl);
