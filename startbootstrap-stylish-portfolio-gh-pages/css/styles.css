@@ -10872,11 +10872,10 @@ html {
 #sidebar-wrapper {
   position: fixed;
   z-index: 2;
-  right: 0;
+  right: -250px;
   width: 250px;
   height: 100%;
   transition: all 0.4s ease 0s;
-  transform: translateX(250px);
   background: #1D809F;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -10935,7 +10934,7 @@ html {
 }
 
 #sidebar-wrapper.active {
-  right: 250px;
+  right: 0;
   width: 250px;
   transition: all 0.4s ease 0s;
 }
@@ -10944,11 +10943,12 @@ html {
 @media (max-width: 768px) {
   /* Optimized sidebar width for tablets and phones */
   #sidebar-wrapper {
+    right: -280px;
     width: 280px;
   }
 
   #sidebar-wrapper.active {
-    right: 280px;
+    right: 0;
     width: 280px;
   }
 
@@ -10982,11 +10982,12 @@ html {
 /* Extra small phones (iPhone SE, etc.) */
 @media (max-width: 375px) {
   #sidebar-wrapper {
+    right: -260px;
     width: 260px;
   }
 
   #sidebar-wrapper.active {
-    right: 260px;
+    right: 0;
     width: 260px;
   }
 
