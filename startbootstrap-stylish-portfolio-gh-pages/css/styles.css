@@ -10897,15 +10897,21 @@ html {
   padding: 15px;
 }
 
-.sidebar-nav li a:hover {
-  text-decoration: none;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-}
-
+.sidebar-nav li a:hover,
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
   text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(-3px);
+  transition: all 0.2s ease;
+}
+
+/* Mobile touch feedback */
+@media (max-width: 768px) {
+  .sidebar-nav li a:active {
+    background: rgba(255, 255, 255, 0.35);
+  }
 }
 
 .sidebar-nav > .sidebar-brand {
@@ -10932,6 +10938,65 @@ html {
   right: 250px;
   width: 250px;
   transition: all 0.4s ease 0s;
+}
+
+/* Mobile Menu Optimizations */
+@media (max-width: 768px) {
+  /* Optimized sidebar width for tablets and phones */
+  #sidebar-wrapper {
+    width: 280px;
+  }
+
+  #sidebar-wrapper.active {
+    right: 280px;
+    width: 280px;
+  }
+
+  .sidebar-nav {
+    width: 280px;
+  }
+
+  /* Larger touch targets for menu items */
+  .sidebar-nav li.sidebar-nav-item a {
+    padding: 18px 20px;
+    font-size: 1.05rem;
+  }
+
+  /* Add spacing between menu items for easier tapping */
+  .sidebar-nav li.sidebar-nav-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Larger brand area */
+  .sidebar-nav > .sidebar-brand {
+    height: 85px;
+    padding: 20px 20px;
+  }
+
+  /* Add bottom padding to prevent last item from being too low */
+  .sidebar-nav li:last-child a {
+    margin-bottom: 20px;
+  }
+}
+
+/* Extra small phones (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  #sidebar-wrapper {
+    width: 260px;
+  }
+
+  #sidebar-wrapper.active {
+    right: 260px;
+    width: 260px;
+  }
+
+  .sidebar-nav {
+    width: 260px;
+  }
+
+  .sidebar-nav li.sidebar-nav-item a {
+    font-size: 1rem;
+  }
 }
 
 .menu-toggle {
@@ -11806,7 +11871,7 @@ footer.footer .social-link:hover {
   transform-origin: center;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   white-space: nowrap;
 }
@@ -11834,7 +11899,7 @@ footer.footer .social-link:hover {
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
   max-width: 500px;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* Show details on hover (expanded state) */
