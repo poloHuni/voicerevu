@@ -162,382 +162,719 @@
                 </div>
             </div>
         </section>
-        <!-- Comparison Table Section-->
-        <section class="content-section bg-white text-center" id="comparison">
+        <!-- Comparison Card Grid Section-->
+        <section class="content-section bg-white" id="comparison">
             <div class="container px-4 px-lg-5">
                 <!-- Section Heading -->
-                <div class="content-section-heading mb-5">
+                <div class="content-section-heading text-center mb-5">
                     <h3 class="text-secondary mb-0">Comparison</h3>
                     <h2 class="mb-4">How Businesses Collect Guest Feedback Today</h2>
                     <p class="lead text-muted mb-5">See how VoiceRevu stacks up against traditional methods</p>
                 </div>
 
-                <!-- Desktop Table (Hidden on Mobile) -->
-                <div class="comparison-table-wrapper d-none d-md-block">
-                    <table class="comparison-table">
-                        <thead>
-                            <tr>
-                                <th class="criteria-header">Criteria</th>
-                                <th class="method-header">Email/SMS Surveys</th>
-                                <th class="method-header">Paper / QR Surveys</th>
-                                <th class="method-header">Public Online Reviews</th>
-                                <th class="method-header voicerevu-header">
-                                    <i class="fab fa-whatsapp me-2"></i>WhatsApp VoiceRevu
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Row 1: Ease for the Customer -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Ease for the Customer</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Low</span>
-                                    <small class="d-block mt-1 text-muted">links and typing required</small>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-neutral"><i class="fas fa-minus"></i> Medium</span>
-                                    <small class="d-block mt-1 text-muted">effort required on-site</small>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-neutral"><i class="fas fa-minus"></i> Medium</span>
-                                    <small class="d-block mt-1 text-muted">account and public posting</small>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Very High</span>
-                                    <small class="d-block mt-1 fw-bold">familiar WhatsApp, voice or text</small>
-                                </td>
-                            </tr>
-                            <!-- Row 2: Customer Participation Rate -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Customer Participation Rate</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Low</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-neutral"><i class="fas fa-minus"></i> Low to Medium</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Low</span>
-                                    <small class="d-block mt-1 text-muted">mostly extreme experiences</small>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> High</span>
-                                    <small class="d-block mt-1 fw-bold">natural and low effort</small>
-                                </td>
-                            </tr>
-                            <!-- Row 3: Language Accessibility -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Language Accessibility</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Usually English only</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Usually English only</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Mostly English</span>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Multiple SA languages</span>
-                                </td>
-                            </tr>
-                            <!-- Row 4: Depth & Honesty of Feedback -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Depth & Honesty of Feedback</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Shallow</span>
-                                    <small class="d-block mt-1 text-muted">checkbox-based</small>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Very limited</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-neutral"><i class="fas fa-minus"></i> Emotional</span>
-                                    <small class="d-block mt-1 text-muted">often exaggerated</small>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> High</span>
-                                    <small class="d-block mt-1 fw-bold">customers speak freely</small>
-                                </td>
-                            </tr>
-                            <!-- Row 5: Speed of Feedback -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Speed of Feedback</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Delayed</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Delayed</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Often delayed</span>
-                                    <small class="d-block mt-1 text-muted">until frustration peaks</small>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Near real-time</span>
-                                </td>
-                            </tr>
-                            <!-- Row 6: Private Issue Resolution -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Private Issue Resolution</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Limited</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Limited</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> None</span>
-                                    <small class="d-block mt-1 text-muted">issues go public immediately</small>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Built-in</span>
-                                    <small class="d-block mt-1 fw-bold">option to request follow-up</small>
-                                </td>
-                            </tr>
-                            <!-- Row 7: Reputation Risk -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Reputation Risk</td>
-                                <td class="value-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Low</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Low</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> High</span>
-                                    <small class="d-block mt-1 text-muted">public and permanent</small>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Low</span>
-                                    <small class="d-block mt-1 fw-bold">resolve before going public</small>
-                                </td>
-                            </tr>
-                            <!-- Row 8: Actionable Insights for Management -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Actionable Insights for Management</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Weak summaries</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Minimal</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Hard to aggregate</span>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Strong</span>
-                                    <small class="d-block mt-1 fw-bold">AI-driven insights</small>
-                                </td>
-                            </tr>
-                            <!-- Row 9: Sentiment & Trend Tracking -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Sentiment & Trend Tracking</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Rare</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Not available</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Inconsistent</span>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Clear</span>
-                                    <small class="d-block mt-1 fw-bold">sentiment and topic trends per branch</small>
-                                </td>
-                            </tr>
-                            <!-- Row 10: Multi-Branch Visibility -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Multi-Branch Visibility</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Poor</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Poor</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> Fragmented</span>
-                                    <small class="d-block mt-1 text-muted">across platforms</small>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Centralised</span>
-                                    <small class="d-block mt-1 fw-bold">dashboard for all locations</small>
-                                </td>
-                            </tr>
-                            <!-- Row 11: Encourages Positive Public Reviews -->
-                            <tr class="comparison-row">
-                                <td class="criteria-cell">Encourages Positive Public Reviews</td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> No</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-no"><i class="fas fa-times"></i> No</span>
-                                </td>
-                                <td class="value-cell">
-                                    <span class="check-neutral"><i class="fas fa-minus"></i> N/A</span>
-                                </td>
-                                <td class="value-cell voicerevu-cell">
-                                    <span class="check-yes"><i class="fas fa-check"></i> Yes!</span>
-                                    <small class="d-block mt-1 fw-bold">one-click posting</small>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Interactive Card Grid -->
+                <div class="comparison-card-grid">
+
+                    <!-- VoiceRevu Hero Card -->
+                    <article class="comparison-card comparison-card-hero" role="article">
+                        <div class="card-header">
+                            <div class="card-icon card-icon-hero">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <h3>WhatsApp VoiceRevu</h3>
+                            <span class="hero-badge">Best Choice</span>
+                        </div>
+
+                        <!-- Primary Criteria (Always Visible) -->
+                        <div class="criteria-list">
+                            <!-- Criterion 1: Ease for the Customer -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-user-check criterion-icon"></i>
+                                    <span class="criterion-name">Ease for the Customer</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 2: Customer Participation Rate -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-users criterion-icon"></i>
+                                    <span class="criterion-name">Customer Participation Rate</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="4" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-4" style="width: 80%;"></div>
+                                    </div>
+                                    <span class="rating-score">4/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 3: Depth & Honesty of Feedback -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-comment-dots criterion-icon"></i>
+                                    <span class="criterion-name">Depth & Honesty of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="4" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-4" style="width: 80%;"></div>
+                                    </div>
+                                    <span class="rating-score">4/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 4: Speed of Feedback -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-bolt criterion-icon"></i>
+                                    <span class="criterion-name">Speed of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 5: Private Issue Resolution -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-shield-alt criterion-icon"></i>
+                                    <span class="criterion-name">Private Issue Resolution</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 6: Actionable Insights -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-brain criterion-icon"></i>
+                                    <span class="criterion-name">Actionable Insights</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Criteria (Hidden Initially) -->
+                        <div class="criteria-secondary" style="display: none;">
+                            <!-- Criterion 7: Language Accessibility -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-language criterion-icon"></i>
+                                    <span class="criterion-name">Language Accessibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 8: Reputation Risk -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-exclamation-triangle criterion-icon"></i>
+                                    <span class="criterion-name">Reputation Risk</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 9: Sentiment & Trend Tracking -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-chart-line criterion-icon"></i>
+                                    <span class="criterion-name">Sentiment & Trend Tracking</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="4" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-4" style="width: 80%;"></div>
+                                    </div>
+                                    <span class="rating-score">4/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 10: Multi-Branch Visibility -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-building criterion-icon"></i>
+                                    <span class="criterion-name">Multi-Branch Visibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Criterion 11: Encourages Positive Reviews -->
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-star criterion-icon"></i>
+                                    <span class="criterion-name">Encourages Positive Reviews</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Email/SMS Card -->
+                    <article class="comparison-card" role="article">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h3>Email/SMS Surveys</h3>
+                        </div>
+
+                        <!-- Primary Criteria -->
+                        <div class="criteria-list">
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-user-check criterion-icon"></i>
+                                    <span class="criterion-name">Ease for the Customer</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-users criterion-icon"></i>
+                                    <span class="criterion-name">Customer Participation Rate</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-comment-dots criterion-icon"></i>
+                                    <span class="criterion-name">Depth & Honesty of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-bolt criterion-icon"></i>
+                                    <span class="criterion-name">Speed of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-shield-alt criterion-icon"></i>
+                                    <span class="criterion-name">Private Issue Resolution</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="2" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-2" style="width: 40%;"></div>
+                                    </div>
+                                    <span class="rating-score">2/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-brain criterion-icon"></i>
+                                    <span class="criterion-name">Actionable Insights</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Criteria -->
+                        <div class="criteria-secondary" style="display: none;">
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-language criterion-icon"></i>
+                                    <span class="criterion-name">Language Accessibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-exclamation-triangle criterion-icon"></i>
+                                    <span class="criterion-name">Reputation Risk</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-chart-line criterion-icon"></i>
+                                    <span class="criterion-name">Sentiment & Trend Tracking</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-building criterion-icon"></i>
+                                    <span class="criterion-name">Multi-Branch Visibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-star criterion-icon"></i>
+                                    <span class="criterion-name">Encourages Positive Reviews</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Paper/QR Card -->
+                    <article class="comparison-card" role="article">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-clipboard"></i>
+                            </div>
+                            <h3>Paper / QR Surveys</h3>
+                        </div>
+
+                        <!-- Primary Criteria -->
+                        <div class="criteria-list">
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-user-check criterion-icon"></i>
+                                    <span class="criterion-name">Ease for the Customer</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="3" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-3" style="width: 60%;"></div>
+                                    </div>
+                                    <span class="rating-score">3/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-users criterion-icon"></i>
+                                    <span class="criterion-name">Customer Participation Rate</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="2" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-2" style="width: 40%;"></div>
+                                    </div>
+                                    <span class="rating-score">2/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-comment-dots criterion-icon"></i>
+                                    <span class="criterion-name">Depth & Honesty of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-bolt criterion-icon"></i>
+                                    <span class="criterion-name">Speed of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-shield-alt criterion-icon"></i>
+                                    <span class="criterion-name">Private Issue Resolution</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="2" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-2" style="width: 40%;"></div>
+                                    </div>
+                                    <span class="rating-score">2/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-brain criterion-icon"></i>
+                                    <span class="criterion-name">Actionable Insights</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Criteria -->
+                        <div class="criteria-secondary" style="display: none;">
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-language criterion-icon"></i>
+                                    <span class="criterion-name">Language Accessibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-exclamation-triangle criterion-icon"></i>
+                                    <span class="criterion-name">Reputation Risk</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-5" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="rating-score">5/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-chart-line criterion-icon"></i>
+                                    <span class="criterion-name">Sentiment & Trend Tracking</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-building criterion-icon"></i>
+                                    <span class="criterion-name">Multi-Branch Visibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-star criterion-icon"></i>
+                                    <span class="criterion-name">Encourages Positive Reviews</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Public Reviews Card -->
+                    <article class="comparison-card" role="article">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3>Public Online Reviews</h3>
+                        </div>
+
+                        <!-- Primary Criteria -->
+                        <div class="criteria-list">
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-user-check criterion-icon"></i>
+                                    <span class="criterion-name">Ease for the Customer</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="3" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-3" style="width: 60%;"></div>
+                                    </div>
+                                    <span class="rating-score">3/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-users criterion-icon"></i>
+                                    <span class="criterion-name">Customer Participation Rate</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-comment-dots criterion-icon"></i>
+                                    <span class="criterion-name">Depth & Honesty of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="2" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-2" style="width: 40%;"></div>
+                                    </div>
+                                    <span class="rating-score">2/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-quality">Data Quality</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-bolt criterion-icon"></i>
+                                    <span class="criterion-name">Speed of Feedback</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-shield-alt criterion-icon"></i>
+                                    <span class="criterion-name">Private Issue Resolution</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-brain criterion-icon"></i>
+                                    <span class="criterion-name">Actionable Insights</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Criteria -->
+                        <div class="criteria-secondary" style="display: none;">
+                            <div class="criterion-item">
+                                <span class="category-tag category-customer">Customer Experience</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-language criterion-icon"></i>
+                                    <span class="criterion-name">Language Accessibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="2" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-2" style="width: 40%;"></div>
+                                    </div>
+                                    <span class="rating-score">2/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-risk">Risk Management</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-exclamation-triangle criterion-icon"></i>
+                                    <span class="criterion-name">Reputation Risk</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-chart-line criterion-icon"></i>
+                                    <span class="criterion-name">Sentiment & Trend Tracking</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-building criterion-icon"></i>
+                                    <span class="criterion-name">Multi-Branch Visibility</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-1" style="width: 20%;"></div>
+                                    </div>
+                                    <span class="rating-score">1/5</span>
+                                </div>
+                            </div>
+
+                            <div class="criterion-item">
+                                <span class="category-tag category-value">Business Value</span>
+                                <div class="criterion-header">
+                                    <i class="fas fa-star criterion-icon"></i>
+                                    <span class="criterion-name">Encourages Positive Reviews</span>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-bar" role="progressbar" aria-valuenow="3" aria-valuemin="1" aria-valuemax="5">
+                                        <div class="rating-bar-fill rating-3" style="width: 60%;"></div>
+                                    </div>
+                                    <span class="rating-score">3/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
                 </div>
 
-                <!-- Mobile Accordion Cards (Hidden on Desktop) -->
-                <div class="comparison-cards d-md-none">
-                    <div class="accordion" id="comparisonAccordion">
-                        <!-- VoiceRevu Card (Expanded by Default) -->
-                        <div class="accordion-item voicerevu-card">
-                            <h3 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#voicerevuCard" aria-expanded="true">
-                                    <i class="fab fa-whatsapp me-2"></i> WhatsApp VoiceRevu
-                                    <span class="badge bg-warning text-dark ms-2">⭐ Best</span>
-                                </button>
-                            </h3>
-                            <div id="voicerevuCard" class="accordion-collapse collapse show" data-bs-parent="#comparisonAccordion">
-                                <div class="accordion-body">
-                                    <dl class="row mb-0 comparison-list">
-                                        <dt class="col-7">Ease for Customer:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Very High</span></dd>
-                                        <dt class="col-7">Participation Rate:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> High</span></dd>
-                                        <dt class="col-7">Language Access:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Multiple</span></dd>
-                                        <dt class="col-7">Depth & Honesty:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> High</span></dd>
-                                        <dt class="col-7">Speed of Feedback:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Real-time</span></dd>
-                                        <dt class="col-7">Private Resolution:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Built-in</span></dd>
-                                        <dt class="col-7">Reputation Risk:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Low</span></dd>
-                                        <dt class="col-7">Insights:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Strong</span></dd>
-                                        <dt class="col-7">Trend Tracking:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Clear</span></dd>
-                                        <dt class="col-7">Multi-Branch:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Centralised</span></dd>
-                                        <dt class="col-7">Encourages Reviews:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Yes!</span></dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Email/SMS Card (Collapsed) -->
-                        <div class="accordion-item">
-                            <h3 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emailCard">
-                                    <i class="fas fa-envelope me-2"></i> Email/SMS Surveys
-                                </button>
-                            </h3>
-                            <div id="emailCard" class="accordion-collapse collapse" data-bs-parent="#comparisonAccordion">
-                                <div class="accordion-body">
-                                    <dl class="row mb-0 comparison-list">
-                                        <dt class="col-7">Ease for Customer:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Low</span></dd>
-                                        <dt class="col-7">Participation Rate:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Low</span></dd>
-                                        <dt class="col-7">Language Access:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> English</span></dd>
-                                        <dt class="col-7">Depth & Honesty:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Shallow</span></dd>
-                                        <dt class="col-7">Speed of Feedback:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Delayed</span></dd>
-                                        <dt class="col-7">Private Resolution:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Limited</span></dd>
-                                        <dt class="col-7">Reputation Risk:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Low</span></dd>
-                                        <dt class="col-7">Insights:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Weak</span></dd>
-                                        <dt class="col-7">Trend Tracking:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Rare</span></dd>
-                                        <dt class="col-7">Multi-Branch:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Poor</span></dd>
-                                        <dt class="col-7">Encourages Reviews:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> No</span></dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Paper/QR Card (Collapsed) -->
-                        <div class="accordion-item">
-                            <h3 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paperCard">
-                                    <i class="fas fa-clipboard me-2"></i> Paper / QR Surveys
-                                </button>
-                            </h3>
-                            <div id="paperCard" class="accordion-collapse collapse" data-bs-parent="#comparisonAccordion">
-                                <div class="accordion-body">
-                                    <dl class="row mb-0 comparison-list">
-                                        <dt class="col-7">Ease for Customer:</dt>
-                                        <dd class="col-5 text-end"><span class="check-neutral"><i class="fas fa-minus"></i> Medium</span></dd>
-                                        <dt class="col-7">Participation Rate:</dt>
-                                        <dd class="col-5 text-end"><span class="check-neutral"><i class="fas fa-minus"></i> Low-Med</span></dd>
-                                        <dt class="col-7">Language Access:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> English</span></dd>
-                                        <dt class="col-7">Depth & Honesty:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Limited</span></dd>
-                                        <dt class="col-7">Speed of Feedback:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Delayed</span></dd>
-                                        <dt class="col-7">Private Resolution:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Limited</span></dd>
-                                        <dt class="col-7">Reputation Risk:</dt>
-                                        <dd class="col-5 text-end"><span class="check-yes"><i class="fas fa-check"></i> Low</span></dd>
-                                        <dt class="col-7">Insights:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Minimal</span></dd>
-                                        <dt class="col-7">Trend Tracking:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> None</span></dd>
-                                        <dt class="col-7">Multi-Branch:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Poor</span></dd>
-                                        <dt class="col-7">Encourages Reviews:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> No</span></dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Public Reviews Card (Collapsed) -->
-                        <div class="accordion-item">
-                            <h3 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#publicCard">
-                                    <i class="fas fa-star me-2"></i> Public Online Reviews
-                                </button>
-                            </h3>
-                            <div id="publicCard" class="accordion-collapse collapse" data-bs-parent="#comparisonAccordion">
-                                <div class="accordion-body">
-                                    <dl class="row mb-0 comparison-list">
-                                        <dt class="col-7">Ease for Customer:</dt>
-                                        <dd class="col-5 text-end"><span class="check-neutral"><i class="fas fa-minus"></i> Medium</span></dd>
-                                        <dt class="col-7">Participation Rate:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Low</span></dd>
-                                        <dt class="col-7">Language Access:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> English</span></dd>
-                                        <dt class="col-7">Depth & Honesty:</dt>
-                                        <dd class="col-5 text-end"><span class="check-neutral"><i class="fas fa-minus"></i> Emotional</span></dd>
-                                        <dt class="col-7">Speed of Feedback:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Delayed</span></dd>
-                                        <dt class="col-7">Private Resolution:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> None</span></dd>
-                                        <dt class="col-7">Reputation Risk:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> High</span></dd>
-                                        <dt class="col-7">Insights:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Hard</span></dd>
-                                        <dt class="col-7">Trend Tracking:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Inconsistent</span></dd>
-                                        <dt class="col-7">Multi-Branch:</dt>
-                                        <dd class="col-5 text-end"><span class="check-no"><i class="fas fa-times"></i> Fragmented</span></dd>
-                                        <dt class="col-7">Encourages Reviews:</dt>
-                                        <dd class="col-5 text-end"><span class="check-neutral"><i class="fas fa-minus"></i> N/A</span></dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Expand/Collapse Button -->
+                <div class="text-center mt-4">
+                    <button id="toggleComparisonBtn" class="btn-expand-comparison" aria-expanded="false">
+                        <span class="btn-text">View All Features</span>
+                        <i class="fas fa-chevron-down ms-2"></i>
+                    </button>
                 </div>
             </div>
         </section>

@@ -78,3 +78,68 @@ function fadeIn(el, display) {
         }
     })();
 };
+
+// Comparison Card Grid - Expand/Collapse Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('toggleComparisonBtn');
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            const secondarySections = document.querySelectorAll('.criteria-secondary');
+            const btnText = this.querySelector('.btn-text');
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+            // Toggle button state
+            this.setAttribute('aria-expanded', !isExpanded);
+
+            // Toggle text
+            btnText.textContent = isExpanded ? 'View All Features' : 'Show Less';
+
+            // Toggle secondary criteria visibility
+            secondarySections.forEach(function(section) {
+                if (isExpanded) {
+                    section.classList.remove('show');
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'flex';
+                    // Small delay to trigger animation
+                    setTimeout(function() {
+                        section.classList.add('show');
+                    }, 10);
+                }
+            });
+        });
+    }
+
+    // Animate progress bars on load
+    function animateProgressBars() {
+        const progressBars = document.querySelectorAll('.rating-bar-fill');
+
+        progressBars.forEach(function(bar, index) {
+            const targetWidth = bar.style.width;
+            bar.style.width = '0%';
+
+            setTimeout(function() {
+                bar.style.width = targetWidth;
+            }, 100 + (index * 100)); // Stagger animation
+        });
+    }
+
+    // Check if comparison section is in viewport and animate
+    const comparisonSection = document.getElementById('comparison');
+
+    if (comparisonSection) {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    animateProgressBars();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        observer.observe(comparisonSection);
+    }
+});
