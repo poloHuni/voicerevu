@@ -3,149 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revu - Review Redirect</title>
+    <title>Revu - Copy Your Review</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
-            background: #fff;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .review-text {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            max-height: 180px;
+            overflow-y: auto;
+            border: 2px dashed #e0e0e0;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px 5px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .status {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .status-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e0e0e0;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .manual-copy {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .manual-copy p {
+            font-size: 13px;
+            color: #888;
+            margin: 0;
+        }
+
+        .platform-logo {
+            font-size: 28px;
+            margin-right: 8px;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loading-state">
+            <div class="icon">📋</div>
+            <h1>Loading your review...</h1>
+            <p><span class="loading"></span>Please wait</p>
+        </div>
+
+        <!-- Copy State -->
+        <div id="copy-state" class="hidden">
+            <div class="icon" id="platform-icon">⭐</div>
+            <h1>Your Review is Ready!</h1>
+            <p>Tap the button to copy your review, then paste it on <strong id="platform-name">Google</strong>.</p>
+
+            <div class="review-text" id="review-preview">Loading...</div>
+
+            <div id="copy-status"></div>
+
+            <button class="btn btn-primary" id="copy-btn" onclick="copyReview()">
+                📋 Tap to Copy Review
+            </button>
+
+            <div id="continue-section" class="hidden">
+                <button class="btn btn-success" id="continue-btn" onclick="continueToSite()">
+                    ✅ Continue to <span id="continue-platform">Google</span>
+                </button>
+            </div>
+
+            <div class="manual-copy hidden" id="manual-copy">
+                <p>Copy not working? Long-press the text above to select and copy manually.</p>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden">
+            <div class="icon">😕</div>
+            <h1>Something went wrong</h1>
+            <p id="error-message">We couldn't load your review.</p>
+            <button class="btn btn-secondary" onclick="location.reload()">Try Again</button>
+        </div>
+    </div>
 
     <script>
         // ============================================================================
         // CONFIGURATION - Railway Production Backend
         // ============================================================================
-        const BACKEND_URL = "https://revu.up.railway.app";  // Updated domain
+        const BACKEND_URL = "https://revu.up.railway.app";
 
-        // ============================================================================
-        // MAIN REDIRECT LOGIC
-        // ============================================================================
-        async function copyAndRedirect() {
+        // Global state
+        let reviewData = null;
+        let platform = 'google';
+        let redirectUrl = '';
+        let reviewId = '';
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+
+        async function init() {
             try {
                 // Parse URL parameters
                 const params = new URLSearchParams(window.location.search);
-                const reviewText = params.get('text');
-                const reviewId = params.get('review_id');
-                const placeId = params.get('place_id');
-                const tripadvisorUrl = params.get('tripadvisor_url');
+                reviewId = params.get('review_id');
+                platform = params.get('platform') || 'google';
 
-                // Determine platform (Google or TripAdvisor)
-                const isTripadvisor = !!tripadvisorUrl;
-                const platform = isTripadvisor ? 'TripAdvisor' : 'Google';
-
-                console.log(`[REDIRECT] Starting ${platform} redirect...`);
                 console.log('[REDIRECT] Review ID:', reviewId);
                 console.log('[REDIRECT] Platform:', platform);
-                console.log('[REDIRECT] Text in URL:', reviewText ? 'Yes' : 'No');
 
-                // Validate required parameters
-                if (!isTripadvisor && !placeId) {
-                    console.error('[REDIRECT] Missing place_id parameter for Google');
-                    alert('Error: Missing Google Place ID');
-                    return;
+                if (!reviewId) {
+                    throw new Error('Missing review ID');
                 }
 
-                if (isTripadvisor && !tripadvisorUrl) {
-                    console.error('[REDIRECT] Missing tripadvisor_url parameter');
-                    alert('Error: Missing TripAdvisor URL');
-                    return;
+                if (platform !== 'google' && platform !== 'tripadvisor') {
+                    throw new Error('Invalid platform');
                 }
 
-                let textToCopy = reviewText;
+                // Update UI for platform
+                const isGoogle = platform === 'google';
+                const platformDisplay = isGoogle ? 'Google' : 'TripAdvisor';
+                document.getElementById('platform-name').textContent = platformDisplay;
+                document.getElementById('continue-platform').textContent = platformDisplay;
+                document.getElementById('platform-icon').textContent = isGoogle ? '⭐' : '🌍';
 
-                // If no text in URL, fetch from Firebase API
-                if (!textToCopy && reviewId) {
-                    console.log('[REDIRECT] Fetching review text from Firebase...');
+                // Fetch review data from API
+                console.log('[REDIRECT] Fetching review data...');
+                const response = await fetch(`${BACKEND_URL}/api/review-text/${reviewId}`);
 
-                    try {
-                        const response = await fetch(`${BACKEND_URL}/api/review-text/${reviewId}`);
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                        }
-
-                        const data = await response.json();
-                        textToCopy = data.review_text;
-                        console.log('[REDIRECT] ✅ Fetched from Firebase');
-                    } catch (error) {
-                        console.error('[REDIRECT] Failed to fetch review text:', error);
-                        console.warn('[REDIRECT] Proceeding without copied text');
-                    }
+                if (!response.ok) {
+                    throw new Error(`Failed to load review (${response.status})`);
                 }
 
-                // Copy to clipboard if we have text
-                let copySuccess = false;
-                if (textToCopy) {
-                    try {
-                        await navigator.clipboard.writeText(decodeURIComponent(textToCopy));
-                        console.log('[REDIRECT] ✅ Copied to clipboard');
-                        copySuccess = true;
-                    } catch (clipboardError) {
-                        console.warn('[REDIRECT] Clipboard copy failed:', clipboardError);
-                        // Continue anyway - user can manually copy
-                    }
+                reviewData = await response.json();
+                console.log('[REDIRECT] ✅ Data fetched successfully');
+
+                // Validate platform availability
+                if (platform === 'google' && !reviewData.google_available) {
+                    throw new Error('Google Reviews not available for this business');
+                }
+                if (platform === 'tripadvisor' && !reviewData.tripadvisor_available) {
+                    throw new Error('TripAdvisor not available for this business');
+                }
+
+                // Build redirect URL
+                if (platform === 'google') {
+                    redirectUrl = `https://search.google.com/local/writereview?placeid=${reviewData.business_google_id}`;
                 } else {
-                    console.warn('[REDIRECT] No review text available to copy');
+                    redirectUrl = reviewData.business_tripadvisor_url;
                 }
 
-                // Track the click (non-blocking)
-                if (reviewId) {
-                    const trackEndpoint = isTripadvisor
-                        ? `${BACKEND_URL}/api/track-tripadvisor-click/${reviewId}`
-                        : `${BACKEND_URL}/api/track-google-click/${reviewId}`;
+                // Show review preview
+                document.getElementById('review-preview').textContent = reviewData.review_text || 'No review text available';
 
-                    fetch(trackEndpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }
-                    }).then(() => {
-                        console.log(`[REDIRECT] ✅ ${platform} click tracked`);
-                    }).catch(error => {
-                        console.warn('[REDIRECT] Failed to track click:', error);
-                    });
-                }
-
-                // Small delay to ensure clipboard operation completes
-                if (copySuccess) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                }
-
-                // DEBUG: Longer delay to read console logs (remove this in production)
-                console.log('[REDIRECT] ⏱️ Waiting 5 seconds before redirect for debugging...');
-                await new Promise(resolve => setTimeout(resolve, 5000));
-
-                // Redirect to the appropriate platform
-                let redirectUrl;
-                if (isTripadvisor) {
-                    redirectUrl = decodeURIComponent(tripadvisorUrl);
-                    console.log('[REDIRECT] Redirecting to TripAdvisor...');
-                } else {
-                    redirectUrl = `https://search.google.com/local/writereview?placeid=${placeId}`;
-                    console.log('[REDIRECT] Redirecting to Google Reviews...');
-                }
-
-                window.location.href = redirectUrl;
+                // Show copy state
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('copy-state').classList.remove('hidden');
 
             } catch (error) {
-                console.error('[REDIRECT] Fatal error:', error);
-
-                // Fallback: redirect anyway (no alert - silent)
-                const params = new URLSearchParams(window.location.search);
-                const placeId = params.get('place_id');
-                const tripadvisorUrl = params.get('tripadvisor_url');
-
-                if (tripadvisorUrl) {
-                    window.location.href = decodeURIComponent(tripadvisorUrl);
-                } else if (placeId) {
-                    window.location.href = `https://search.google.com/local/writereview?placeid=${placeId}`;
-                }
+                console.error('[REDIRECT] Init error:', error);
+                showError(error.message);
             }
         }
 
-        // Run immediately when page loads
-        copyAndRedirect();
+        // ============================================================================
+        // CROSS-PLATFORM COPY - Works on iPhone, Samsung, Android, Desktop
+        // ============================================================================
+        async function copyReview() {
+            if (!reviewData || !reviewData.review_text) {
+                showCopyStatus('No review text available', false);
+                return;
+            }
+
+            const text = reviewData.review_text;
+            let success = false;
+
+            // Method 1: Modern Async Clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    success = true;
+                    console.log('[COPY] ✅ Clipboard API succeeded');
+                } catch (err) {
+                    console.warn('[COPY] Clipboard API failed:', err);
+                }
+            }
+
+            // Method 2: execCommand fallback (older browsers)
+            if (!success) {
+                success = copyWithExecCommand(text);
+            }
+
+            // Method 3: iOS-specific fallback
+            if (!success && isIOS()) {
+                success = copyIOSFallback(text);
+            }
+
+            // Update UI
+            if (success) {
+                showCopyStatus('✅ Copied to clipboard!', true);
+
+                // Update button
+                const btn = document.getElementById('copy-btn');
+                btn.innerHTML = '✅ Copied!';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+
+                // Show continue button
+                document.getElementById('continue-section').classList.remove('hidden');
+
+                // Track the click
+                trackClick();
+
+            } else {
+                showCopyStatus('Long-press the text above to copy manually', false);
+                document.getElementById('manual-copy').classList.remove('hidden');
+            }
+        }
+
+        // Fallback: execCommand (works on older browsers)
+        function copyWithExecCommand(text) {
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '0';
+                textarea.style.opacity = '0';
+                textarea.setAttribute('readonly', '');
+
+                document.body.appendChild(textarea);
+
+                // iOS needs special handling
+                if (isIOS()) {
+                    const range = document.createRange();
+                    range.selectNodeContents(textarea);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    textarea.setSelectionRange(0, text.length);
+                } else {
+                    textarea.select();
+                }
+
+                const result = document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                if (result) {
+                    console.log('[COPY] ✅ execCommand succeeded');
+                    return true;
+                }
+            } catch (err) {
+                console.warn('[COPY] execCommand failed:', err);
+            }
+            return false;
+        }
+
+        // iOS-specific fallback
+        function copyIOSFallback(text) {
+            try {
+                const input = document.createElement('input');
+                input.setAttribute('value', text);
+                input.style.position = 'absolute';
+                input.style.left = '-9999px';
+                document.body.appendChild(input);
+
+                input.select();
+                input.setSelectionRange(0, text.length);
+
+                const result = document.execCommand('copy');
+                document.body.removeChild(input);
+
+                if (result) {
+                    console.log('[COPY] ✅ iOS fallback succeeded');
+                    return true;
+                }
+            } catch (err) {
+                console.warn('[COPY] iOS fallback failed:', err);
+            }
+            return false;
+        }
+
+        // Detect iOS devices
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+
+        // Track click (fire and forget)
+        function trackClick() {
+            if (!reviewId) return;
+
+            const endpoint = platform === 'tripadvisor'
+                ? `/api/track-tripadvisor-click/${reviewId}`
+                : `/api/track-google-click/${reviewId}`;
+
+            fetch(`${BACKEND_URL}${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(() => console.log(`[TRACK] ✅ ${platform} click tracked`))
+            .catch(err => console.warn('[TRACK] Failed:', err));
+        }
+
+        // Continue to review platform
+        function continueToSite() {
+            if (redirectUrl) {
+                console.log('[REDIRECT] Going to:', redirectUrl);
+                window.location.href = redirectUrl;
+            } else {
+                showCopyStatus('Redirect URL not available', false);
+            }
+        }
+
+        // Show copy status
+        function showCopyStatus(message, isSuccess) {
+            const el = document.getElementById('copy-status');
+            el.innerHTML = `<div class="status ${isSuccess ? 'status-success' : 'status-error'}">${message}</div>`;
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('copy-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+            document.getElementById('error-message').textContent = message;
+        }
     </script>
 </body>
 </html>

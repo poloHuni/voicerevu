@@ -3,89 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post to TripAdvisor - VoiceRevu</title>
+    <title>Revu - Copy Your Review for TripAdvisor</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #00AF87 0%, #34E0A1 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             padding: 20px;
         }
 
         .container {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 500px;
+            padding: 40px 30px;
+            max-width: 420px;
             width: 100%;
             text-align: center;
-            animation: slideUp 0.5s ease-out;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .logo {
-            font-size: 60px;
-            margin-bottom: 20px;
-            animation: bounce 1s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
+        .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
         }
 
         h1 {
-            color: #2D2D2D;
-            font-size: 28px;
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.5;
             margin-bottom: 15px;
-            font-weight: 700;
         }
 
-        .subtitle {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 30px;
+        .review-text {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            max-height: 180px;
+            overflow-y: auto;
+            border: 2px dashed #00AF87;
+            user-select: text;
+            -webkit-user-select: text;
         }
 
-        #status {
-            font-size: 18px;
-            color: #666;
-            margin: 30px 0;
-        }
-
-        .spinner {
+        .btn {
             display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #00AF87;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px 5px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00AF87 0%, #34E0A1 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 175, 135, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .status {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .status-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e0e0e0;
+            border-top: 3px solid #00AF87;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 20px 0;
+            margin-right: 8px;
+            vertical-align: middle;
         }
 
         @keyframes spin {
@@ -93,278 +138,284 @@
             100% { transform: rotate(360deg); }
         }
 
-        #instructions {
-            display: none;
+        .hidden {
+            display: none !important;
         }
 
-        .success-icon {
-            font-size: 80px;
-            margin: 20px 0;
-            animation: scaleIn 0.5s ease-out;
+        .manual-copy {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
         }
 
-        @keyframes scaleIn {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
-        }
-
-        .step {
-            background: #F8F9FA;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 15px 0;
-            text-align: left;
-            border-left: 4px solid #00AF87;
-        }
-
-        .step-number {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            background: #00AF87;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 30px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .step-text {
-            font-size: 16px;
-            color: #2D2D2D;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .review-preview {
-            background: #F8F9FA;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 2px dashed #00AF87;
-        }
-
-        .review-text {
-            color: #2D2D2D;
-            font-size: 14px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .footer {
-            margin-top: 30px;
-            color: #999;
-            font-size: 14px;
-        }
-
-        .footer a {
-            color: #00AF87;
-            text-decoration: none;
-        }
-
-        .error-message {
-            background: #FFE5E5;
-            color: #D8000C;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border-left: 4px solid #D8000C;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .step {
-                padding: 15px;
-            }
+        .manual-copy p {
+            font-size: 13px;
+            color: #888;
+            margin: 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">✈️</div>
-        <h1>Post Your Review to TripAdvisor</h1>
-        <p class="subtitle">Helping travelers make better decisions</p>
-
         <!-- Loading State -->
-        <div id="loading">
-            <div class="spinner"></div>
-            <p id="status">Loading your review...</p>
+        <div id="loading-state">
+            <div class="icon">✈️</div>
+            <h1>Loading your review...</h1>
+            <p><span class="loading"></span>Please wait</p>
         </div>
 
-        <!-- Success State -->
-        <div id="instructions">
-            <div class="success-icon">✅</div>
-            <p style="font-size: 18px; color: #00AF87; font-weight: bold; margin-bottom: 20px;">
-                Review copied to clipboard!
-            </p>
+        <!-- Copy State -->
+        <div id="copy-state" class="hidden">
+            <div class="icon">✈️</div>
+            <h1>Your Review is Ready!</h1>
+            <p>Tap the button to copy your review, then paste it on <strong>TripAdvisor</strong>.</p>
 
-            <div class="review-preview">
-                <p class="review-text" id="reviewText"></p>
+            <div class="review-text" id="review-preview">Loading...</div>
+
+            <div id="copy-status"></div>
+
+            <button class="btn btn-primary" id="copy-btn" onclick="copyReview()">
+                📋 Tap to Copy Review
+            </button>
+
+            <div id="continue-section" class="hidden">
+                <button class="btn btn-success" id="continue-btn" onclick="continueToSite()">
+                    ✅ Continue to TripAdvisor
+                </button>
             </div>
 
-            <div class="step">
-                <span class="step-number">1</span>
-                <span class="step-text">Paste your review on the TripAdvisor page</span>
+            <div class="manual-copy hidden" id="manual-copy">
+                <p>Copy not working? Long-press the text above to select and copy manually.</p>
             </div>
-
-            <div class="step">
-                <span class="step-number">2</span>
-                <span class="step-text">Rate your experience (1-5 stars)</span>
-            </div>
-
-            <div class="step">
-                <span class="step-number">3</span>
-                <span class="step-text">Submit to help other travelers</span>
-            </div>
-
-            <p style="margin-top: 20px; color: #666; font-size: 14px;">
-                TripAdvisor will open in a new tab in <span id="countdown">3</span> seconds...
-            </p>
         </div>
 
         <!-- Error State -->
-        <div id="error" style="display: none;">
-            <div class="error-message">
-                <p style="font-weight: bold; margin-bottom: 10px;">⚠️ Unable to load review</p>
-                <p id="errorMessage">Please try again or contact support.</p>
-            </div>
-        </div>
-
-        <div class="footer">
-            Powered by <a href="https://voicerevu.com" target="_blank">VoiceRevu</a>
+        <div id="error-state" class="hidden">
+            <div class="icon">😕</div>
+            <h1>Something went wrong</h1>
+            <p id="error-message">We couldn't load your review.</p>
+            <button class="btn btn-secondary" onclick="location.reload()">Try Again</button>
         </div>
     </div>
 
     <script>
-        // Get URL parameters
-        const params = new URLSearchParams(window.location.search);
-        const reviewId = params.get('review_id');
-        const tripadvisorUrl = params.get('tripadvisor_url');
+        // ============================================================================
+        // CONFIGURATION - Railway Production Backend
+        // ============================================================================
+        const BACKEND_URL = "https://revu.up.railway.app";
 
-        // Validate parameters
-        if (!reviewId || !tripadvisorUrl) {
-            showError('Invalid link. Missing review ID or TripAdvisor URL.');
-        } else {
-            loadAndCopyReview();
-        }
+        // Global state
+        let reviewData = null;
+        let redirectUrl = '';
+        let reviewId = '';
 
-        function showError(message) {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('error').style.display = 'block';
-            document.getElementById('errorMessage').textContent = message;
-        }
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
 
-        async function loadAndCopyReview() {
+        async function init() {
             try {
-                // Fetch review text from API
-                const response = await fetch(`https://revu.up.railway.app/api/review-text/${reviewId}`);
+                // Parse URL parameters
+                const params = new URLSearchParams(window.location.search);
+                reviewId = params.get('review_id');
+                const tripadvisorUrl = params.get('tripadvisor_url');
+
+                console.log('[REDIRECT] Review ID:', reviewId);
+
+                if (!reviewId) {
+                    throw new Error('Missing review ID');
+                }
+
+                // Fetch review data from API
+                console.log('[REDIRECT] Fetching review data...');
+                const response = await fetch(`${BACKEND_URL}/api/review-text/${reviewId}`);
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch review');
+                    throw new Error(`Failed to load review (${response.status})`);
                 }
 
-                const data = await response.json();
-                const reviewText = data.review_text;
+                reviewData = await response.json();
+                console.log('[REDIRECT] ✅ Data fetched successfully');
 
-                if (!reviewText) {
-                    throw new Error('Review text is empty');
-                }
-
-                // Copy to clipboard
-                try {
-                    await navigator.clipboard.writeText(reviewText);
-                    console.log('Review copied to clipboard');
-                } catch (clipboardError) {
-                    // Fallback for browsers that don't support clipboard API
-                    console.warn('Clipboard API failed, trying fallback method');
-                    fallbackCopyToClipboard(reviewText);
+                // Build redirect URL - prefer URL from API, fallback to URL param
+                if (reviewData.business_tripadvisor_url) {
+                    redirectUrl = reviewData.business_tripadvisor_url;
+                } else if (tripadvisorUrl) {
+                    redirectUrl = decodeURIComponent(tripadvisorUrl);
+                } else {
+                    throw new Error('TripAdvisor URL not available');
                 }
 
                 // Show review preview
-                document.getElementById('reviewText').textContent = reviewText;
+                document.getElementById('review-preview').textContent = reviewData.review_text || 'No review text available';
 
-                // Track the click
-                try {
-                    await fetch(`https://revu.up.railway.app/api/track-tripadvisor-click/${reviewId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    console.log('TripAdvisor click tracked');
-                } catch (trackError) {
-                    console.error('Failed to track click:', trackError);
-                    // Don't fail the whole process if tracking fails
-                }
-
-                // Show success state
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('instructions').style.display = 'block';
-
-                // Countdown and redirect
-                let countdown = 3;
-                const countdownElement = document.getElementById('countdown');
-
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    countdownElement.textContent = countdown;
-
-                    if (countdown <= 0) {
-                        clearInterval(countdownInterval);
-                        // Decode the TripAdvisor URL and open it
-                        const decodedUrl = decodeURIComponent(tripadvisorUrl);
-                        window.open(decodedUrl, '_blank');
-
-                        // Optional: Show a message that they can close this tab
-                        setTimeout(() => {
-                            document.querySelector('.subtitle').textContent = 'You can close this tab now';
-                        }, 1000);
-                    }
-                }, 1000);
+                // Show copy state
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('copy-state').classList.remove('hidden');
 
             } catch (error) {
-                console.error('Error:', error);
-                showError(error.message || 'An unexpected error occurred. Please try again.');
+                console.error('[REDIRECT] Init error:', error);
+                showError(error.message);
             }
         }
 
-        // Fallback method for copying to clipboard (older browsers)
-        function fallbackCopyToClipboard(text) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            textArea.style.top = '0';
-            textArea.style.left = '0';
-            textArea.style.opacity = '0';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-
-            try {
-                document.execCommand('copy');
-                console.log('Fallback: Text copied to clipboard');
-            } catch (err) {
-                console.error('Fallback: Failed to copy text', err);
+        // ============================================================================
+        // CROSS-PLATFORM COPY - Works on iPhone, Samsung, Android, Desktop
+        // ============================================================================
+        async function copyReview() {
+            if (!reviewData || !reviewData.review_text) {
+                showCopyStatus('No review text available', false);
+                return;
             }
 
-            document.body.removeChild(textArea);
+            const text = reviewData.review_text;
+            let success = false;
+
+            // Method 1: Modern Async Clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    success = true;
+                    console.log('[COPY] ✅ Clipboard API succeeded');
+                } catch (err) {
+                    console.warn('[COPY] Clipboard API failed:', err);
+                }
+            }
+
+            // Method 2: execCommand fallback (older browsers)
+            if (!success) {
+                success = copyWithExecCommand(text);
+            }
+
+            // Method 3: iOS-specific fallback
+            if (!success && isIOS()) {
+                success = copyIOSFallback(text);
+            }
+
+            // Update UI
+            if (success) {
+                showCopyStatus('✅ Copied to clipboard!', true);
+
+                // Update button
+                const btn = document.getElementById('copy-btn');
+                btn.innerHTML = '✅ Copied!';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+
+                // Show continue button
+                document.getElementById('continue-section').classList.remove('hidden');
+
+                // Track the click
+                trackClick();
+
+            } else {
+                showCopyStatus('Long-press the text above to copy manually', false);
+                document.getElementById('manual-copy').classList.remove('hidden');
+            }
+        }
+
+        // Fallback: execCommand (works on older browsers)
+        function copyWithExecCommand(text) {
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '0';
+                textarea.style.opacity = '0';
+                textarea.setAttribute('readonly', '');
+
+                document.body.appendChild(textarea);
+
+                // iOS needs special handling
+                if (isIOS()) {
+                    const range = document.createRange();
+                    range.selectNodeContents(textarea);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    textarea.setSelectionRange(0, text.length);
+                } else {
+                    textarea.select();
+                }
+
+                const result = document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                if (result) {
+                    console.log('[COPY] ✅ execCommand succeeded');
+                    return true;
+                }
+            } catch (err) {
+                console.warn('[COPY] execCommand failed:', err);
+            }
+            return false;
+        }
+
+        // iOS-specific fallback
+        function copyIOSFallback(text) {
+            try {
+                const input = document.createElement('input');
+                input.setAttribute('value', text);
+                input.style.position = 'absolute';
+                input.style.left = '-9999px';
+                document.body.appendChild(input);
+
+                input.select();
+                input.setSelectionRange(0, text.length);
+
+                const result = document.execCommand('copy');
+                document.body.removeChild(input);
+
+                if (result) {
+                    console.log('[COPY] ✅ iOS fallback succeeded');
+                    return true;
+                }
+            } catch (err) {
+                console.warn('[COPY] iOS fallback failed:', err);
+            }
+            return false;
+        }
+
+        // Detect iOS devices
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+
+        // Track click (fire and forget)
+        function trackClick() {
+            if (!reviewId) return;
+
+            fetch(`${BACKEND_URL}/api/track-tripadvisor-click/${reviewId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(() => console.log('[TRACK] ✅ TripAdvisor click tracked'))
+            .catch(err => console.warn('[TRACK] Failed:', err));
+        }
+
+        // Continue to TripAdvisor
+        function continueToSite() {
+            if (redirectUrl) {
+                console.log('[REDIRECT] Going to:', redirectUrl);
+                window.location.href = redirectUrl;
+            } else {
+                showCopyStatus('TripAdvisor URL not available', false);
+            }
+        }
+
+        // Show copy status
+        function showCopyStatus(message, isSuccess) {
+            const el = document.getElementById('copy-status');
+            el.innerHTML = `<div class="status ${isSuccess ? 'status-success' : 'status-error'}">${message}</div>`;
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('copy-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+            document.getElementById('error-message').textContent = message;
         }
     </script>
 </body>
