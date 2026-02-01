@@ -11390,6 +11390,25 @@ footer.footer .social-link:hover {
   color: #2C3E50;
 }
 
+/* About Revu Section - Text Readability Fix */
+.content-section#about-revu h2 {
+  color: #1A1A1A;
+  font-weight: 700;
+}
+
+.content-section#about-revu h3.text-secondary {
+  color: #D4AF37 !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.content-section#about-revu p.lead {
+  color: #1A1A1A;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
 /* Callout Section Styling */
 .callout {
   padding: 6rem 0;
@@ -11518,7 +11537,7 @@ footer.footer .social-link:hover {
   transform: scale(1.05);
 }
 
-/* Gradient Overlay - Teal tint for brand consistency */
+/* Gradient Overlay - Dark for text readability */
 .story-overlay {
   position: absolute;
   top: 0;
@@ -11527,8 +11546,8 @@ footer.footer .social-link:hover {
   height: 100%;
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(13, 79, 95, 0.6) 100%
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.75) 100%
   );
   display: flex;
   align-items: center;
@@ -11541,8 +11560,8 @@ footer.footer .social-link:hover {
 .story-card:hover .story-overlay {
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(13, 79, 95, 0.7) 100%
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.8) 100%
   );
 }
 
@@ -11582,16 +11601,18 @@ footer.footer .social-link:hover {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
   letter-spacing: 0.02em;
 }
 
 .story-text {
-  color: white;
-  font-size: 1.1rem;
-  line-height: 1.7;
+  color: #FFFFFF !important;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.8;
   margin: 0;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+  text-shadow: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Hover effect - subtle lift */
@@ -11602,19 +11623,18 @@ footer.footer .social-link:hover {
 
 /* Closing Statement */
 .story-closing {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: #FFFFFF;
   padding: 2.5rem;
   border-radius: 1rem;
-  border: 2px solid rgba(212, 175, 55, 0.4);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 2px solid #D4AF37;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .story-closing p {
   font-size: 1.25rem;
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 400;
+  color: #1A1A1A !important;
+  font-weight: 500;
   margin-bottom: 0;
 }
 
